@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "dotenv/": "https://deno.land/std@0.185.0/dotenv/",
+    "deta": "npm:deta"
+  },
+  "tasks": {
+    "dev": "deno run --allow-read --allow-env --watch main.ts"
+  }
+}
