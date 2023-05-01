@@ -1,9 +1,9 @@
 {
   "imports": {
-    "deta": "https://esm.sh/deta",
-    "chance": "https://esm.sh/chance"
+    "deta": "https://esm.sh/deta@^1",
+    "chance": "https://esm.sh/chance@^1"
   },
   "tasks": {
-    "dev": "deno run --allow-all --watch main.ts"
+    "dev": "deno run --allow-all --watch main.ts --development"
   }
 }

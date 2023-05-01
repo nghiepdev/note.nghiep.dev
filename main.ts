@@ -1,7 +1,12 @@
 import "https://deno.land/std@0.185.0/dotenv/load.ts";
-import Chance from "chance";
-
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
+import Chance from "chance";
+import { Deta } from "deta";
+
+const deta = Deta(Deno.env.get("DETA_PROJECT_KEY"));
+const db = deta.Base(Deno.env.get("DETA_PROJECT_BASE") ?? "note");
+
+const __IS_DEV = Deno.args.includes("--development");
 
 const app = new Application();
 const chance = new Chance();
@@ -18,26 +23,37 @@ router
     const id = chance.word();
     response.redirect(`/${id}`);
   })
-
   .get("/ws", (ctx) => {
     const socket = ctx.upgrade();
-    socket.onmessage = (message) => {
-      const data = JSON.parse(message.data);
-      console.log(1, data);
+    socket.onmessage = async (message) => {
+      try {
+        const {
+          id,
+          content,
+        }: {
+          content: string;
+          id: string;
+        } = JSON.parse(message.data);
+        await db.put(content, id);
+      } catch (error) {
+        console.error(error);
+      }
     };
   })
   .get("/:id", async ({ response, params, request }) => {
     const { host: hostname, protocol } = request.url;
     const id = params.id;
-    console.log({ protocol });
 
-    if (true) {
-      // TODO
+    if (__IS_DEV) {
       templateHtml = await getTemplateHtml();
     }
+
+    const item = await db.get(id);
+    const content = (item as { value: string } | null)?.value ?? "";
+
     response.body = templateHtml
       .replace("{{id}}", id)
-      .replace("{{note_content}}", "content")
+      .replace("{{note_content}}", content)
       .replace(
         "{{websocket}}",
         `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws`
