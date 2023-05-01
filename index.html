@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://icon-sets.iconify.design/favicon@32.png"
+      type="image/png"
+    />
+    <title>Take Notes</title>
+    <meta property="og:title" content="Take Notes" />
+    <meta name="description" content="Take notes with simplicity" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://images.unsplash.com/photo-1579208581155-feeb3bbb4e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      textarea {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea
+      autofocus
+      autocomplete="off"
+      placeholder="Task a note..."
+      aria-label="Take a note"
+      spellcheck="false"
+    >
+{{note_content}}</textarea
+    >
+    <script>
+      async function connectToServer() {
+        const ws = new WebSocket("{{websocket}}");
+        return new Promise((resolve) => {
+          const timer = setInterval(() => {
+            if (ws.readyState === 1) {
+              clearInterval(timer);
+              resolve(ws);
+            }
+          }, 10);
+        });
+      }
+
+      const id = "{{id}}";
+      const textarea = document.querySelector("textarea");
+
+      (async () => {
+        const ws = await connectToServer();
+        textarea.addEventListener("input", (event) => {
+          const content = event.target.value;
+          ws.send(JSON.stringify({ id, content }));
+        });
+      })();
+    </script>
+  </body>
+</html>
