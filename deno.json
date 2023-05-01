@@ -1,8 +1,7 @@
 {
   "imports": {
-    "dotenv/": "https://deno.land/std@0.185.0/dotenv/",
-    "deta": "npm:deta",
-    "chance": "npm:chance"
+    "deta": "https://esm.sh/deta",
+    "chance": "https://esm.sh/chance"
   },
   "tasks": {
     "dev": "deno run --allow-all --watch main.ts"

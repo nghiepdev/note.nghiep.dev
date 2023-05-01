@@ -1,4 +1,4 @@
-import "dotenv/load.ts";
+import "https://deno.land/std@0.185.0/dotenv/load.ts";
 import Chance from "chance";
 
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
@@ -26,7 +26,7 @@ router
       console.log(1, data);
     };
   })
-  .get("/:id", async ({ response, params, routerPath, request }) => {
+  .get("/:id", async ({ response, params, request }) => {
     const { host: hostname, protocol } = request.url;
     const id = params.id;
     console.log({ protocol });
