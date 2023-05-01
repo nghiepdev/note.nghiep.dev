@@ -29,15 +29,14 @@ async function getTemplateHtml() {
 
 const updateDetaContent = throttle(
   ({ content, id }: NotePayload) => db.put(content, id),
-  1000,
-  { leading: false }
+  1000
 );
 
 let templateHtml = await getTemplateHtml();
 
 router
   .get("/", ({ response }) => {
-    const id = chance.word();
+    const id = chance.first().toLowerCase();
     response.redirect(`/${id}`);
   })
   .get("/ws/:id", (ctx) => {
@@ -58,8 +57,14 @@ router
     }
 
     const id = params.id;
+    const userAgent = request.headers.get("User-Agent");
     const { host: hostname, protocol } = request.url;
     const item = (await db.get(id)) as Note | null;
+
+    if (!userAgent?.includes("Mozilla")) {
+      response.body = item?.value;
+      return response;
+    }
 
     response.body = templateHtml
       .replace("{{note_content}}", item?.value ?? "")
