@@ -17,6 +17,7 @@
       property="og:image"
       content="https://images.unsplash.com/photo-1579208581155-feeb3bbb4e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
     />
+    <script src="https://unpkg.com/reconnectingwebsocket"></script>
     <style>
       * {
         margin: 0;
@@ -41,7 +42,7 @@
     >
     <script>
       async function connectToServer() {
-        const ws = new WebSocket("{{websocket}}");
+        const ws = new ReconnectingWebSocket("{{websocket}}");
         return new Promise((resolve) => {
           const timer = setInterval(() => {
             if (ws.readyState === 1) {
@@ -61,11 +62,6 @@
           ws.send(JSON.stringify({ content }));
         });
       })();
-    </script>
-    <script>
-      setInterval(() => {
-        fetch("/wakeup");
-      }, 15000);
     </script>
   </body>
 </html>
