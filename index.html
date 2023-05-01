@@ -63,5 +63,10 @@
         });
       })();
     </script>
+    <script>
+      setInterval(() => {
+        fetch("/wakeup");
+      }, 15000);
+    </script>
   </body>
 </html>
