@@ -9,11 +9,6 @@ interface Note {
   value: string;
 }
 
-interface NotePayload {
-  id: string;
-  content: string;
-}
-
 const deta = Deta(Deno.env.get("DETA_PROJECT_KEY"));
 const db = deta.Base(Deno.env.get("DETA_PROJECT_BASE") ?? "note");
 
@@ -27,8 +22,8 @@ async function getTemplateHtml() {
   return await Deno.readTextFile("./index.html");
 }
 
-const updateDetaContent = throttle(
-  ({ content, id }: NotePayload) => db.put(content, id),
+const updateDetaValue = throttle(
+  ({ value, key }: Note) => db.put(value, key),
   1000
 );
 
@@ -36,12 +31,12 @@ let templateHtml = await getTemplateHtml();
 
 router
   .get("/", ({ response }) => {
-    const id = chance.first().toLowerCase();
-    response.redirect(`/${id}`);
+    const key = chance.first().toLowerCase();
+    response.redirect(`/${key}`);
   })
   .get("/ws", (ctx) => {
-    const id = ctx.request.url.searchParams.get("id");
-    if (!id) {
+    const key = ctx.request.url.searchParams.get("key");
+    if (!key) {
       ctx.response.body = "Missing client ID";
       ctx.response.status = 400;
       return ctx.response;
@@ -51,33 +46,34 @@ router
 
     socket.onmessage = async (message) => {
       try {
-        const { content }: NotePayload = JSON.parse(message.data);
-        await updateDetaContent({ id, content });
+        const { value }: Note = JSON.parse(message.data);
+        await updateDetaValue({ key, value });
       } catch (error) {
         console.error(error);
       }
     };
   })
-  .get("/:id", async ({ response, params, request }) => {
+  .get("/:key", async ({ response, params, request }) => {
     if (__IS_DEV) {
       templateHtml = await getTemplateHtml();
     }
 
-    const id = params.id;
-    const userAgent = request.headers.get("User-Agent");
+    const key = params.key;
+    const userAgent = request.headers.get("user-agent");
     const { host: hostname, protocol } = request.url;
-    const item = (await db.get(id)) as Note | null;
+    const note = (await db.get(key)) as Note | null;
 
     if (!userAgent?.includes("Mozilla")) {
-      response.body = item?.value;
+      response.body = note?.value;
       return response;
     }
 
     response.body = templateHtml
-      .replace("{{note_content}}", item?.value ?? "")
+      .replace("{{note_content}}", note?.value ?? "")
+      .replace("{{key}}", key)
       .replace(
         "{{websocket}}",
-        `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws/?id=${id}`
+        `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws/?key=${key}`
       );
   });
 

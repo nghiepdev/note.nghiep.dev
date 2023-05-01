@@ -57,13 +57,19 @@
         });
       }
 
+      const key = "{{key}}";
       const textarea = document.querySelector("textarea");
+      const persistedContent = localStorage.getItem(key);
+      if (persistedContent) {
+        textarea.value = persistedContent;
+      }
 
       (async () => {
         const ws = await connectToServer();
         textarea.addEventListener("input", (event) => {
-          const content = event.target.value;
-          ws.send(JSON.stringify({ content }));
+          const value = event.target.value;
+          localStorage.setItem(key, value);
+          ws.send(JSON.stringify({ value }));
         });
       })();
     </script>
