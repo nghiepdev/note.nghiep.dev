@@ -39,9 +39,16 @@ router
     const id = chance.first().toLowerCase();
     response.redirect(`/${id}`);
   })
-  .get("/ws/:id", (ctx) => {
-    const id = ctx.params.id;
+  .get("/ws", (ctx) => {
+    const id = ctx.request.url.searchParams.get("id");
+    if (!id) {
+      ctx.response.body = "Missing client ID";
+      ctx.response.status = 400;
+      return ctx.response;
+    }
+
     const socket = ctx.upgrade();
+
     socket.onmessage = async (message) => {
       try {
         const { content }: NotePayload = JSON.parse(message.data);
@@ -70,7 +77,7 @@ router
       .replace("{{note_content}}", item?.value ?? "")
       .replace(
         "{{websocket}}",
-        `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws/${id}`
+        `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws/?id=${id}`
       );
   });
 
