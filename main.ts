@@ -2,6 +2,17 @@ import "https://deno.land/std@0.185.0/dotenv/load.ts";
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import Chance from "chance";
 import { Deta } from "deta";
+import throttle from "throttle";
+
+interface Note {
+  key: string;
+  value: string;
+}
+
+interface NotePayload {
+  id: string;
+  content: string;
+}
 
 const deta = Deta(Deno.env.get("DETA_PROJECT_KEY"));
 const db = deta.Base(Deno.env.get("DETA_PROJECT_BASE") ?? "note");
@@ -16,6 +27,12 @@ async function getTemplateHtml() {
   return await Deno.readTextFile("./index.html");
 }
 
+const updateDetaContent = throttle(
+  ({ content, id }: NotePayload) => db.put(content, id),
+  1000,
+  { leading: false }
+);
+
 let templateHtml = await getTemplateHtml();
 
 router
@@ -23,49 +40,41 @@ router
     const id = chance.word();
     response.redirect(`/${id}`);
   })
-  .get("/ws", (ctx) => {
+  .get("/ws/:id", (ctx) => {
+    const id = ctx.params.id;
     const socket = ctx.upgrade();
     socket.onmessage = async (message) => {
       try {
-        const {
-          id,
-          content,
-        }: {
-          content: string;
-          id: string;
-        } = JSON.parse(message.data);
-        await db.put(content, id);
+        const { content }: NotePayload = JSON.parse(message.data);
+        await updateDetaContent({ id, content });
       } catch (error) {
         console.error(error);
       }
     };
   })
   .get("/:id", async ({ response, params, request }) => {
-    const { host: hostname, protocol } = request.url;
-    const id = params.id;
-
     if (__IS_DEV) {
       templateHtml = await getTemplateHtml();
     }
 
-    const item = await db.get(id);
-    const content = (item as { value: string } | null)?.value ?? "";
+    const id = params.id;
+    const { host: hostname, protocol } = request.url;
+    const item = (await db.get(id)) as Note | null;
 
     response.body = templateHtml
-      .replace("{{id}}", id)
-      .replace("{{note_content}}", content)
+      .replace("{{note_content}}", item?.value ?? "")
       .replace(
         "{{websocket}}",
-        `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws`
+        `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws/${id}`
       );
   });
 
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.addEventListener("listen", ({ port, secure }) => {
+app.addEventListener("listen", ({ port, hostname, secure }) => {
   console.log(
-    `Listening on: ${secure ? "https://" : "http://"}${"localhost"}:${port}`
+    `Listening on: ${secure ? "https://" : "http://"}${hostname}:${port}`
   );
 });
 

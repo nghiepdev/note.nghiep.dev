@@ -52,14 +52,13 @@
         });
       }
 
-      const id = "{{id}}";
       const textarea = document.querySelector("textarea");
 
       (async () => {
         const ws = await connectToServer();
         textarea.addEventListener("input", (event) => {
           const content = event.target.value;
-          ws.send(JSON.stringify({ id, content }));
+          ws.send(JSON.stringify({ content }));
         });
       })();
     </script>

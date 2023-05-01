@@ -1,7 +1,8 @@
 {
   "imports": {
     "deta": "https://esm.sh/deta@^1",
-    "chance": "https://esm.sh/chance@^1"
+    "chance": "https://esm.sh/chance@^1",
+    "throttle": "https://esm.sh/lodash.throttle@^4"
   },
   "tasks": {
     "dev": "deno run --allow-all --watch main.ts --development"
