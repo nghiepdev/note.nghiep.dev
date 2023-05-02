@@ -45,18 +45,33 @@
 {{note_content}}</textarea
     >
     <script>
-      async function connectToServer() {
-        const ws = new ReconnectingWebSocket("{{websocket}}");
-        return new Promise((resolve) => {
-          const timer = setInterval(() => {
-            if (ws.readyState === 1) {
-              clearInterval(timer);
-              resolve(ws);
-            }
-          }, 10);
-        });
-      }
+      const ConnectToServer = (() => {
+        let ws;
 
+        async function createWsConnection() {
+          const ws = new ReconnectingWebSocket("{{websocket}}");
+          return new Promise((resolve) => {
+            const timer = setInterval(() => {
+              if (ws.readyState === 1) {
+                clearInterval(timer);
+                resolve(ws);
+              }
+            }, 10);
+          });
+        }
+
+        return {
+          async getInstance() {
+            if (!ws) {
+              ws = await createWsConnection();
+            }
+            return ws;
+          },
+        };
+      })();
+
+      // Initialize connection
+      ConnectToServer.getInstance();
       const key = "{{key}}";
       const textarea = document.querySelector("textarea");
       const persistedContent = localStorage.getItem(key);
@@ -64,14 +79,12 @@
         textarea.value = persistedContent;
       }
 
-      (async () => {
-        const ws = await connectToServer();
-        textarea.addEventListener("input", (event) => {
-          const value = event.target.value;
-          localStorage.setItem(key, value);
-          ws.send(JSON.stringify({ value }));
-        });
-      })();
+      textarea.addEventListener("input", async (event) => {
+        const ws = await ConnectToServer.getInstance();
+        const value = event.target.value;
+        localStorage.setItem(key, value);
+        ws.send(JSON.stringify({ value }));
+      });
     </script>
   </body>
 </html>
