@@ -81,8 +81,8 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 app.addEventListener("listen", ({ port, hostname, secure }) => {
-  console.log(
-    `Listening on: ${secure ? "https://" : "http://"}${hostname}:${port}`
+  console.info(
+    `⚡⚡⚡ Listening on: ${secure ? "https://" : "http://"}${hostname}:${port}`
   );
 });
 
