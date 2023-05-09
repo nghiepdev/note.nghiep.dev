@@ -72,17 +72,11 @@
 
       // Initialize connection
       ConnectToServer.getInstance();
-      const key = "{{key}}";
       const textarea = document.querySelector("textarea");
-      const persistedContent = localStorage.getItem(key);
-      if (persistedContent) {
-        textarea.value = persistedContent;
-      }
 
       textarea.addEventListener("input", async (event) => {
         const ws = await ConnectToServer.getInstance();
         const value = event.target.value;
-        localStorage.setItem(key, value);
         ws.send(JSON.stringify({ value }));
       });
     </script>

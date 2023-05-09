@@ -70,7 +70,6 @@ router
 
     response.body = templateHtml
       .replace("{{note_content}}", note?.value ?? "")
-      .replace("{{key}}", key)
       .replace(
         "{{websocket}}",
         `${protocol === "https:" ? "wss" : "ws"}://${hostname}/ws/?key=${key}`
