@@ -22,10 +22,7 @@ async function getTemplateHtml() {
   return await Deno.readTextFile("./index.html");
 }
 
-const updateDetaValue = throttle(
-  ({ value, key }: Note) => db.put(value, key),
-  1000
-);
+const map = new Map<string, (params: Note) => Promise<void>>();
 
 let templateHtml = await getTemplateHtml();
 
@@ -46,8 +43,16 @@ router
 
     socket.onmessage = async (message) => {
       try {
+        let handler = map.get(key);
+        if (!handler) {
+          handler = throttle(
+            ({ value, key }: Note) => db.put(value, key),
+            1000
+          );
+          map.set(key, handler!);
+        }
         const { value }: Note = JSON.parse(message.data);
-        await updateDetaValue({ key, value });
+        await handler?.({ key, value });
       } catch (error) {
         console.error(error);
       }
