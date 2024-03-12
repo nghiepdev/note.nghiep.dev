@@ -1,7 +1,6 @@
 import "https://deno.land/std@0.185.0/dotenv/load.ts";
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import Chance from "chance";
-import throttle from "throttle";
 
 import { db } from "./db.ts";
 import * as schema from "./schema.ts";
@@ -21,7 +20,6 @@ async function getTemplateHtml() {
   return await Deno.readTextFile("./index.html");
 }
 
-const map = new Map<string, (params: Note) => Promise<void>>();
 
 let templateHtml = await getTemplateHtml();
 
@@ -42,21 +40,12 @@ router
 
     socket.onmessage = async (message) => {
       try {
-        let handler = map.get(key);
-        if (!handler) {
-          handler = throttle(
-            ({ value, key }: Note) =>
-              db.insert(schema.notes).values({ key, value })
-                .onConflictDoUpdate({
-                  target: schema.notes.key,
-                  set: { value },
-                }),
-            1000,
-          );
-          map.set(key, handler!);
-        }
         const { value }: Note = JSON.parse(message.data);
-        await handler?.({ key, value });
+        await db.insert(schema.notes).values({ key, value })
+          .onConflictDoUpdate({
+            target: schema.notes.key,
+            set: { value },
+          });
       } catch (error) {
         console.error(error);
       }
@@ -72,7 +61,7 @@ router
     const { host: hostname, protocol } = request.url;
     const note = await db.query.notes.findFirst({
       where: (notes, { eq }) => (eq(notes.key, key)),
-    }) as Note | undefined;
+    });
 
     if (!userAgent?.includes("Mozilla")) {
       response.body = note?.value;

@@ -5,7 +5,7 @@
     "https://esm.sh/chance@^1": "https://esm.sh/chance@1.1.11",
     "https://esm.sh/drizzle-orm@^0/libsql": "https://esm.sh/drizzle-orm@0.30.1/libsql",
     "https://esm.sh/drizzle-orm@^0/sqlite-core": "https://esm.sh/drizzle-orm@0.30.1/sqlite-core",
-    "https://esm.sh/lodash.throttle@^4": "https://esm.sh/lodash.throttle@4.1.1"
+    "https://esm.sh/v135/@types/chance@~1.1/index.d.ts": "https://esm.sh/v135/@types/chance@1.1.6/index.d.ts"
   },
   "remote": {
     "https://deno.land/std@0.185.0/_util/asserts.ts": "178dfc49a464aee693a7e285567b3d0b555dc805ff490505a8aae34f9cfb1462",
@@ -131,7 +131,6 @@
     "https://esm.sh/chance@1.1.11": "9b5f1e5b0286262102959c26562b98d4cb3eca04be2c35f8e0441465c5c3c1bd",
     "https://esm.sh/drizzle-orm@0.30.1/libsql": "81cf48dd9ec0613303e45506a750f6561711f461a0e2eff21fd83e344870d78a",
     "https://esm.sh/drizzle-orm@0.30.1/sqlite-core": "9e6b5d67633712f240db81783fbaeafe5d609de85eb0eb02d50aab85c1ced99f",
-    "https://esm.sh/lodash.throttle@4.1.1": "36b686249b4c1aea5c3b21cdcca04e7eec780aa0ee7033c16fa6b60a1dd5a1c5",
     "https://esm.sh/v135/@libsql/client@0.5.5/denonext/client.mjs": "7d22dd6d09c906139e2dbd1da0d4c16a580b2b3b595bc213841eac03051ccba9",
     "https://esm.sh/v135/@libsql/client@0.5.5/denonext/http.js": "52da5f81f8228b2a21f252d15e3005ab3584c22fe1056799bbca2401d9258eaa",
     "https://esm.sh/v135/@libsql/client@0.5.5/denonext/ws.js": "e272bc69bd5a1afe0d9c9dd8711aca8cb8af93d43327ce02c4910ab0308a9b11",
@@ -209,7 +208,6 @@
     "https://esm.sh/v135/drizzle-orm@0.30.1/denonext/version.js": "6eabfed0884f6c5165b69e4faac7114dc07c84a33db7e7a33ad8e3ea62eb82ec",
     "https://esm.sh/v135/drizzle-orm@0.30.1/denonext/view-common.js": "5c19021af21f6a62c9b2d7a43425229fc3dbf3ed37f96355941fec24d25766f9",
     "https://esm.sh/v135/js-base64@3.7.6/denonext/js-base64.mjs": "a66336e0997620f69a76d0492f171cc259147bfcbb5b5989e3e6146bedade8d0",
-    "https://esm.sh/v135/js-base64@3.7.7/denonext/js-base64.mjs": "dd9df6c872f92919ced96308c346507cd05799eb9e89987bb414fa2b834d7d63",
-    "https://esm.sh/v135/lodash.throttle@4.1.1/denonext/lodash.throttle.mjs": "d99641798555f1ce9f12cab5e30ba328b73babd612047db05586b5f1ce30fd55"
+    "https://esm.sh/v135/js-base64@3.7.7/denonext/js-base64.mjs": "dd9df6c872f92919ced96308c346507cd05799eb9e89987bb414fa2b834d7d63"
   }
 }
