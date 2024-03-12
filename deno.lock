@@ -1,11 +1,10 @@
 {
   "version": "3",
   "redirects": {
+    "https://esm.sh/@faker-js/faker@^8": "https://esm.sh/@faker-js/faker@8.4.1",
     "https://esm.sh/@libsql/client@^0": "https://esm.sh/@libsql/client@0.5.5",
-    "https://esm.sh/chance@^1": "https://esm.sh/chance@1.1.11",
     "https://esm.sh/drizzle-orm@^0/libsql": "https://esm.sh/drizzle-orm@0.30.1/libsql",
-    "https://esm.sh/drizzle-orm@^0/sqlite-core": "https://esm.sh/drizzle-orm@0.30.1/sqlite-core",
-    "https://esm.sh/v135/@types/chance@~1.1/index.d.ts": "https://esm.sh/v135/@types/chance@1.1.6/index.d.ts"
+    "https://esm.sh/drizzle-orm@^0/sqlite-core": "https://esm.sh/drizzle-orm@0.30.1/sqlite-core"
   },
   "remote": {
     "https://deno.land/std@0.185.0/_util/asserts.ts": "178dfc49a464aee693a7e285567b3d0b555dc805ff490505a8aae34f9cfb1462",
@@ -127,10 +126,11 @@
     "https://deno.land/x/oak@v12.4.0/testing.ts": "a0be5c84981afde666de29630f34b09d944ca1a2fe6a5185644b60ad95e16d18",
     "https://deno.land/x/oak@v12.4.0/util.ts": "3af8c4ed04c6cc2bedbe66e562a77fc59c72df31c55a902a63885861ca1639d6",
     "https://deno.land/x/path_to_regexp@v6.2.1/index.ts": "894060567837bae8fc9c5cbd4d0a05e9024672083d5883b525c031eea940e556",
+    "https://esm.sh/@faker-js/faker@8.4.1": "21d589a68f956f90bcf4031bc6f26f5a5c531ca4bd798e16ec33094ea6560bce",
     "https://esm.sh/@libsql/client@0.5.5": "8235ff6e2868673c12cdd5fff43e4e26fb178f067bae51afb326be55e3e6d45f",
-    "https://esm.sh/chance@1.1.11": "9b5f1e5b0286262102959c26562b98d4cb3eca04be2c35f8e0441465c5c3c1bd",
     "https://esm.sh/drizzle-orm@0.30.1/libsql": "81cf48dd9ec0613303e45506a750f6561711f461a0e2eff21fd83e344870d78a",
     "https://esm.sh/drizzle-orm@0.30.1/sqlite-core": "9e6b5d67633712f240db81783fbaeafe5d609de85eb0eb02d50aab85c1ced99f",
+    "https://esm.sh/v135/@faker-js/faker@8.4.1/denonext/faker.mjs": "bf2af6fc7f2660f80df3c0fda1185082478ef84a73b1aa27ea761977f6fd8426",
     "https://esm.sh/v135/@libsql/client@0.5.5/denonext/client.mjs": "7d22dd6d09c906139e2dbd1da0d4c16a580b2b3b595bc213841eac03051ccba9",
     "https://esm.sh/v135/@libsql/client@0.5.5/denonext/http.js": "52da5f81f8228b2a21f252d15e3005ab3584c22fe1056799bbca2401d9258eaa",
     "https://esm.sh/v135/@libsql/client@0.5.5/denonext/ws.js": "e272bc69bd5a1afe0d9c9dd8711aca8cb8af93d43327ce02c4910ab0308a9b11",
@@ -141,7 +141,6 @@
     "https://esm.sh/v135/@libsql/hrana-client@0.5.6/denonext/hrana-client.mjs": "0aea8ec5a5cbca9c60d26003b24cbc394d81d3a796e4717b05ed053a1e284d66",
     "https://esm.sh/v135/@libsql/isomorphic-fetch@0.1.12/denonext/isomorphic-fetch.mjs": "24643446227e9327334d52f5bc0db2a56aba83f35516dc01dc4d6d4f2c737f5f",
     "https://esm.sh/v135/@libsql/isomorphic-ws@0.1.5/denonext/isomorphic-ws.mjs": "4b5e1cd9247271ed5424dfc0b715f791a57c28a2b0570cadf48e17791404f056",
-    "https://esm.sh/v135/chance@1.1.11/denonext/chance.mjs": "28bdb9b2dd493a4f728f82b55134627c3d69001d6a9c9527cefea65a55d86b81",
     "https://esm.sh/v135/drizzle-orm@0.30.1/denonext/alias.js": "c09be3a7c617ae7e1f58ce74b0625b836f88e2a6cb421003419effb33cc31eb8",
     "https://esm.sh/v135/drizzle-orm@0.30.1/denonext/column-builder.js": "866c6d7c25313ec1320507f979df8c555c4306e8b9881fc044a80c5312d390b5",
     "https://esm.sh/v135/drizzle-orm@0.30.1/denonext/column.js": "f04ea546d009f5a18208a70e41f860818bada32b95b2f86fdd7b6e532784b889",

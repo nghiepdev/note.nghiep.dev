@@ -2,8 +2,7 @@
   "imports": {
     "@libsql/client": "https://esm.sh/@libsql/client@^0",
     "drizzle-orm/": "https://esm.sh/drizzle-orm@^0/",
-    "chance": "https://esm.sh/chance@^1",
-    "throttle": "https://esm.sh/lodash.throttle@^4"
+    "@faker-js/faker": "https://esm.sh/@faker-js/faker@^8"
   },
   "tasks": {
     "dev": "deno run --allow-all --watch main.ts --development"

@@ -1,6 +1,6 @@
 import "https://deno.land/std@0.185.0/dotenv/load.ts";
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
-import Chance from "chance";
+import { faker } from "@faker-js/faker";
 
 import { db } from "./db.ts";
 import * as schema from "./schema.ts";
@@ -13,19 +13,17 @@ interface Note {
 const __IS_DEV = Deno.args.includes("--development");
 
 const app = new Application();
-const chance = new Chance();
 const router = new Router();
 
 async function getTemplateHtml() {
   return await Deno.readTextFile("./index.html");
 }
 
-
 let templateHtml = await getTemplateHtml();
 
 router
   .get("/", ({ response }) => {
-    const key = chance.first().toLowerCase();
+    const key = faker.person.firstName().toLowerCase();
     response.redirect(`/${key}`);
   })
   .get("/ws", (ctx) => {
